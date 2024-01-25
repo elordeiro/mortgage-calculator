@@ -88,7 +88,7 @@ export default function GraphContainer(props: GraphContainerProps) {
     };
 
     return (
-        <div className="main-squares h-fit relative lg:w-[calc(25vw)] justify-self-start">
+        <div className="main-squares h-fit relative lg:w-[calc(40vw)] sm:justify-self-center lg:justify-self-start">
             <div className="flex flex-col text-left h-[15%] bg-slate-50 border-b-2 p-2">
                 <span className="text-2xl font-bold">
                     {monthlyPayment.toLocaleString("en-US", {

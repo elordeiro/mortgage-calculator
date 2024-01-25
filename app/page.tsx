@@ -38,7 +38,7 @@ export default function Home() {
 
             <div
                 id="outter-container"
-                className="grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 text-xs gap-5 justify-items-center ml-[10dvw]"
+                className="grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 text-xs gap-5 sm:ml-[1dvw] lg:ml-[10dvw]"
             >
                 <InputContainer
                     homeValue={homeValue}

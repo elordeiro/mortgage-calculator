@@ -143,7 +143,7 @@ export default function InputContainer({
     return (
         <div
             id="input"
-            className="main-squares p-3 justify-self-end shadow-none"
+            className="main-squares shadow-none p-3 sm:justify-self-start lg:justify-self-end"
         >
             {/* <Input
                 label="Home Value"

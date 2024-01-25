@@ -14,7 +14,7 @@ export default function BiWeeklyContainer({
     return (
         <div
             id="biweekly-container"
-            className="main-squares justify-self-start lg:w-[calc(25vw)]"
+            className="main-squares sm:justify-self-center lg:justify-self-start lg:w-[calc(40vw)]"
         >
             <div className="text-left bg-slate-50 border-b-2 p-2">
                 <span className="text-2xl font-bold p-2">

@@ -68,7 +68,7 @@ export default function MortgageDetailContainer(props: MortgageContainerProps) {
     return (
         <div
             id="mortgage-detail-container"
-            className="main-squares justify-self-end"
+            className="main-squares sm:justify-self-center lg:justify-self-end"
         >
             <div className="text-left bg-slate-50 border-b-2 p-2">
                 <span className="text-2xl font-bold p-2">Mortgage Details</span>
