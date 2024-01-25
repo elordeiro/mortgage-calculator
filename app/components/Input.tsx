@@ -1,3 +1,5 @@
+import React from "react";
+
 interface InputProps {
     label: string;
     symbol: string;
@@ -16,7 +18,7 @@ export default function Input({
     onChange,
 }: InputProps) {
     return (
-        <div className="flex justify-between m-1">
+        <div className="flex justify-between m-1 mb-5">
             <h2 className="grow max-w-[25%] text-left">{label}:</h2>
             <div className="grow max-w-[73%] border border-gray-300 m-1 rounded-md">
                 {inverted ? (

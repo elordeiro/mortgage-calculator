@@ -1,75 +1,128 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import React from "react";
+import { useEffect } from "react";
 import Input from "./Input";
 import SlidingInput from "./SlidingInput";
 import DateInput from "./DateInput";
+import { calculateMonthlyPayment } from "../utils/Calculations";
 
-export default function InputContainer() {
-    const [homeValue, setHomeValue] = useState(300000);
-    const [downPayment, setDownPayment] = useState(50000);
-    const [downPaymentPercent, setDownPaymentPercent] = useState(
-        (downPayment / homeValue) * 100
-    );
-    const [loanAmount, setLoanAmount] = useState(homeValue - downPayment);
-    const [interestRate, setInterestRate] = useState(4.0);
-    const [loanTerm, setLoanTerm] = useState(30);
-    const [startDateMonth, setStartDateMonth] = useState(1);
-    const [startDateYear, setStartDateYear] = useState(2024);
-    const [propertyTax, setPropertyTax] = useState(2400);
-    const [PMI, setPMI] = useState(1.0);
-    const [homeInsurance, setHomeInsurance] = useState(1000);
-    const [monthlyHOA, setMonthlyHOA] = useState(0);
-    const [monthlyPayment, setMonthlyPayment] = useState(0);
+interface InputContainerProps {
+    homeValue: number;
+    setHomeValue: (value: number) => void;
+    downPayment: number;
+    setDownPayment: (value: number) => void;
+    downPaymentPercent: number;
+    setDownPaymentPercent: (value: number) => void;
+    loanAmount: number;
+    setLoanAmount: (value: number) => void;
+    interestRate: number;
+    setInterestRate: (value: number) => void;
+    loanTerm: number;
+    setLoanTerm: (value: number) => void;
+    startDateMonth: number;
+    setStartDateMonth: (value: number) => void;
+    startDateYear: number;
+    setStartDateYear: (value: number) => void;
+    propertyTax: number;
+    setPropertyTax: (value: number) => void;
+    PMI: number;
+    setPMI: (value: number) => void;
+    homeInsurance: number;
+    setHomeInsurance: (value: number) => void;
+    monthlyHOA: number;
+    setMonthlyHOA: (value: number) => void;
+    monthlyPayment: number;
+    setMonthlyPayment: (value: number) => void;
+}
 
-    function updateDownPayement(varToChange: string, newValue: number) {
-        if (varToChange === "downPayment") {
-            let newDownPayment = ((newValue / 100) * homeValue);
+export default function InputContainer({
+    homeValue,
+    setHomeValue,
+    downPayment,
+    setDownPayment,
+    downPaymentPercent,
+    setDownPaymentPercent,
+    loanAmount,
+    setLoanAmount,
+    interestRate,
+    setInterestRate,
+    loanTerm,
+    setLoanTerm,
+    startDateMonth,
+    setStartDateMonth,
+    startDateYear,
+    setStartDateYear,
+    propertyTax,
+    setPropertyTax,
+    PMI,
+    setPMI,
+    homeInsurance,
+    setHomeInsurance,
+    monthlyHOA,
+    setMonthlyHOA,
+    monthlyPayment,
+    setMonthlyPayment,
+}: InputContainerProps) {
+    function updateDownPaymentPercent(newDownPayment: number) {
+        console.log("New Down Payment: " + newDownPayment);
+
+        let newDownPaymentPercent = (newDownPayment / homeValue) * 100;
+
+        if (newDownPaymentPercent > 100) {
+            newDownPaymentPercent = 100;
             if (newDownPayment > homeValue) {
-                newDownPayment = homeValue;
-                if (newValue > 100) {
-                    setDownPaymentPercent(100);
-                }
-            } else if (newDownPayment < 0) {
-                newDownPayment = 0;
-                if (newValue < 0) {
-                    setDownPaymentPercent(0);
-                }
+                setDownPayment(homeValue);
             }
-            if (newDownPayment !== downPayment) {
-                setDownPayment(newDownPayment);
+        } else if (newDownPaymentPercent < 0) {
+            newDownPaymentPercent = 0;
+            if (newDownPayment < 0) {
+                setDownPayment(0);
             }
-        } else if (varToChange === "downPaymentPercent") {
-            let newDownPaymentPercent = (newValue / homeValue) * 100;
-            if (newDownPaymentPercent > 100) {
-                newDownPaymentPercent = 100;
-                if (newValue > homeValue) {
-                    setDownPayment(homeValue);
-                }
-            } else if (newDownPaymentPercent < 0) {
-                newDownPaymentPercent = 0;
-                if (newValue < 0) {
-                    setDownPayment(0);
-                }
-            }
+        }
+
+        if (newDownPaymentPercent !== downPaymentPercent) {
             setDownPaymentPercent(newDownPaymentPercent);
         }
     }
 
-    useEffect(() => {
-        updateDownPayement("downPaymentPercent", downPayment);
-    }, [downPayment]);
-    useEffect(() => {
-        updateDownPayement("downPayment", downPaymentPercent);
-    }, [downPaymentPercent]);
+    function updateDownPayment(newDownPaymentPercent: number) {
+        let newDownPayment = (newDownPaymentPercent / 100) * homeValue;
+        if (newDownPayment > homeValue) {
+            newDownPayment = homeValue;
+            if (newDownPaymentPercent > 100) {
+                setDownPaymentPercent(100);
+            }
+        } else if (newDownPayment < 0) {
+            newDownPayment = 0;
+            if (newDownPaymentPercent < 0) {
+                setDownPaymentPercent(0);
+            }
+        }
+        if (newDownPayment !== downPayment) {
+            setDownPayment(newDownPayment);
+        }
+    }
 
     useEffect(() => {
+        setDownPayment((downPaymentPercent / 100.0) * homeValue);
+
         const newLoanAmount = homeValue - downPayment;
         if (newLoanAmount !== loanAmount) {
             setLoanAmount(newLoanAmount);
         }
 
-        const newMonthlyPayment = calculateMonthlyPayment(newLoanAmount);
+        const newMonthlyPayment = calculateMonthlyPayment(
+            newLoanAmount,
+            interestRate,
+            loanTerm,
+            PMI,
+            propertyTax,
+            homeInsurance,
+            monthlyHOA,
+            downPaymentPercent
+        );
+
         if (newMonthlyPayment !== monthlyPayment) {
             setMonthlyPayment(newMonthlyPayment);
         }
@@ -87,32 +140,23 @@ export default function InputContainer() {
         monthlyHOA,
     ]);
 
-    function calculateMonthlyPayment(loanAmount: number) {
-        const monthlyInterestRate = interestRate / 100 / 12;
-        const numberOfPayments = loanTerm * 12;
-        let monthlyPayment =
-            (loanAmount * monthlyInterestRate) /
-            (1 - Math.pow(1 + monthlyInterestRate, -numberOfPayments));
-
-        const monthlyPropertyTax = propertyTax / 12;
-        const monthlyPMI = ((PMI / 100) * loanAmount) / 12;
-        const monthlyHomeInsurance = homeInsurance / 12;
-        monthlyPayment +=
-            monthlyPropertyTax +
-            (downPaymentPercent < 20 ? monthlyPMI : 0) +
-            monthlyHomeInsurance +
-            monthlyHOA;
-        return monthlyPayment;
-    }
-
     return (
-        <div id="input" className="bg-white main-squares">
-            <h2>Input</h2>
-            <Input
+        <div
+            id="input"
+            className="main-squares p-3 justify-self-end shadow-none"
+        >
+            {/* <Input
                 label="Home Value"
                 symbol="$"
                 value={homeValue}
                 onChange={(e) => setHomeValue(parseInt(e.target.value))}
+            /> */}
+            <SlidingInput
+                label="Home Value"
+                symbol="$"
+                value={homeValue}
+                max={1000000}
+                onChange={(e) => setHomeValue(parseFloat(e.target.value))}
             />
             <SlidingInput
                 label="Down Payment"
@@ -123,12 +167,16 @@ export default function InputContainer() {
                 split={true}
                 step={1}
                 onChange={(e) => {
-                    setDownPayment(parseFloat(e.target.value));
-                    console.log(parseInt(e.target.value));
+                    const newDownPayment = parseFloat(e.target.value);
+                    setDownPayment(newDownPayment);
+                    updateDownPaymentPercent(newDownPayment);
+                    // console.log(newDownPayment);
                 }}
                 secondOnChange={(e) => {
-                    setDownPaymentPercent(parseFloat(e.target.value));
-                    console.log(parseInt(e.target.value));
+                    const newDownPaymentPercent = parseFloat(e.target.value);
+                    setDownPaymentPercent(newDownPaymentPercent);
+                    updateDownPayment(newDownPaymentPercent);
+                    // console.log(parseInt(e.target.value));
                 }}
             />
             <Input label="Loan Amount" symbol="$" value={loanAmount} />

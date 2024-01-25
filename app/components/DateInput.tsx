@@ -1,3 +1,5 @@
+import React from "react";
+
 interface DateInputProps {
     label: string;
     currentMonth: number;
@@ -29,7 +31,7 @@ export default function DateInput({
     ];
 
     return (
-        <div className="flex justify-between m-1">
+        <div className="flex justify-between m-1 mb-5">
             <h2 className="grow max-w-[25%] text-left">{label}:</h2>
             <div className="grow max-w-[73%] border border-gray-300 m-1 rounded-md">
                 <div className="flex">
@@ -40,6 +42,7 @@ export default function DateInput({
                         {months.map((month, index) => {
                             return (
                                 <option
+                                    key={index}
                                     value={index + 1}
                                     selected={
                                         currentMonth === index + 1
