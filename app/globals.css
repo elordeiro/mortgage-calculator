@@ -53,7 +53,7 @@ body {
 }
 @layer components {
     .main-squares {
-        @apply text-black rounded-lg grow shadow-md shadow-gray-200 sm:w-[calc(90vw)] lg:w-[calc(50vw)];
+        @apply text-black rounded-lg grow shadow-md shadow-gray-200 sm:w-[calc(90vw)] lg:w-[calc(30vw)];
     }
     .biweekly-label {
         @apply text-xs font-medium text-gray-500;
