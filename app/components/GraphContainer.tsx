@@ -24,6 +24,8 @@ export interface GraphContainerProps {
     downPayment: number;
     monthlyPayment: number;
     PMILength?: number;
+    showAmortization: boolean;
+    onClick: (value: React.SetStateAction<boolean>) => void;
 }
 
 export default function GraphContainer(props: GraphContainerProps) {
@@ -39,6 +41,8 @@ export default function GraphContainer(props: GraphContainerProps) {
         PMI,
         homeInsurance,
         monthlyPayment,
+        showAmortization,
+        onClick,
     } = props;
 
     const hasPMI = loanAmount > homeValue * 0.8;
@@ -88,7 +92,7 @@ export default function GraphContainer(props: GraphContainerProps) {
     };
 
     return (
-        <div className="main-squares h-fit relative lg:w-[calc(25vw)] sm:justify-self-center lg:justify-self-start">
+        <div className="main-squares right-squares h-fit relative">
             <div className="flex flex-col text-left h-[15%] bg-slate-50 border-b-2 p-2">
                 <span className="text-2xl font-bold">
                     {monthlyPayment.toLocaleString("en-US", {
@@ -155,12 +159,23 @@ export default function GraphContainer(props: GraphContainerProps) {
                     ) : null}
                 </table>
             </div>
-
-            <HighchartsReact
-                highcharts={Highcharts}
-                options={options}
-                ref={chartComponentRef}
-            />
+            <div className="text-center">
+                <HighchartsReact
+                    highcharts={Highcharts}
+                    options={options}
+                    ref={chartComponentRef}
+                />
+            </div>
+            <div className="w-full">
+                <button
+                    className="p-2 bg-sky-500 ml-5 mb-2 rounded-lg text-white border border-sky-700 hover:bg-white hover:text-sky-500"
+                    onClick={() => onClick(!showAmortization)}
+                >
+                    {showAmortization
+                        ? "Hide Amortization Table"
+                        : "View Amortization Table"}
+                </button>
+            </div>
         </div>
     );
 }

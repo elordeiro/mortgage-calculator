@@ -40,8 +40,8 @@ export default function SlidingInput({
                 <h2 className="grow max-w-[25%] text-left">{label}:</h2>
                 <div className="grow max-w-[73%] border border-gray-300 m-1 rounded-md">
                     {split ? (
-                        <div className="flex border rounded-md">
-                            <div className="bg-gray-200 px-2 rounded-l-md border-r-[1px] border-gray-300">
+                        <div className="flex border border-gray-300 rounded-[5px]">
+                            <div className="bg-gray-200 px-2 rounded-l-[4px] border-r-[1px] border-gray-300">
                                 {symbol}
                             </div>
                             <input
@@ -68,7 +68,7 @@ export default function SlidingInput({
                             />
                             <div className="flex justify-between">
                                 <input
-                                    className="mx-[2px] pl-2 border-l-[1px] border-gray-300 grow w-[calc(100%-40%)]"
+                                    className="mx-[2px] pl-2 border-l-[1px] border-gray-300 grow max-[400px]:max-w-20 w-[calc(100%-40%)]"
                                     type="number"
                                     value={
                                         (onFocusTwo
@@ -95,15 +95,15 @@ export default function SlidingInput({
                                         setOnFocusTwo(false);
                                     }}
                                 />
-                                <div className="bg-gray-200 px-2 rounded-r-md border-l-[1px] border-gray-300">
+                                <div className="bg-gray-200 px-2 rounded-r-[4px] border-l-[1px] border-gray-300">
                                     {secondSymbol}
                                 </div>
                             </div>
                         </div>
                     ) : (
-                        <div className="flex justify-between border rounded-md">
+                        <div className="flex justify-between border border-gray-300 rounded-[5px]">
                             <input
-                                className="mx-[2px] pl-2 border-gray-300 grow rounded-md w-[calc(100%-40%)]"
+                                className="mx-[2px] pl-2 grow w-[calc(100%-40%)]"
                                 type="number"
                                 value={
                                     onFocusOne ? localValue : value.toFixed(2)
@@ -124,7 +124,7 @@ export default function SlidingInput({
                                     setOnFocusOne(false);
                                 }}
                             />
-                            <div className="bg-gray-200 px-2 rounded-r-md border-l-[1px] border-gray-300">
+                            <div className="bg-gray-200 px-2 rounded-r-[4px] border-l-[1px] border-gray-300">
                                 {symbol}
                             </div>
                         </div>

@@ -141,10 +141,7 @@ export default function InputContainer({
     ]);
 
     return (
-        <div
-            id="input"
-            className="main-squares shadow-none p-3 sm:justify-self-start lg:justify-self-end"
-        >
+        <div id="input" className="main-squares left-squares shadow-none p-3">
             {/* <Input
                 label="Home Value"
                 symbol="$"

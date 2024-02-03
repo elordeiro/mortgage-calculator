@@ -51,12 +51,31 @@ body {
         @apply p-2 font-bold;
     }
 }
+
 @layer components {
     .main-squares {
-        @apply text-black rounded-lg grow shadow-md shadow-gray-200 sm:w-[calc(90vw)] lg:w-[calc(30vw)];
+        @apply text-black rounded-lg grow shadow-md shadow-gray-200 justify-self-center w-[calc(90lvw)];
     }
+
+    .left-squares {
+        @apply lg:justify-self-end lg:w-[calc(50lvw)] lg:max-w-[600px];
+    }
+
+    .right-squares {
+        @apply lg:justify-self-start lg:w-[calc(40lvw)] lg:max-w-[500px];
+    }
+
     .biweekly-label {
         @apply text-xs font-medium text-gray-500;
+    }
+
+    .title {
+        @apply text-4xl lg:text-7xl;
+    }
+    @media (max-width: 400px) {
+        .title {
+            @apply text-2xl;
+        }
     }
 }
 

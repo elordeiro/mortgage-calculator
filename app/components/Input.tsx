@@ -20,7 +20,7 @@ export default function Input({
     return (
         <div className="flex justify-between m-1 mb-5">
             <h2 className="grow max-w-[25%] text-left">{label}:</h2>
-            <div className="grow max-w-[73%] border border-gray-300 m-1 rounded-md">
+            <div className="grow max-w-[73%] border border-gray-300 m-1 rounded-md h-fit">
                 {inverted ? (
                     <div className="flex">
                         <input
@@ -29,13 +29,13 @@ export default function Input({
                             value={value.toFixed(roundTo ?? 0)}
                             onChange={onChange}
                         />
-                        <div className="bg-gray-200 px-2 border-l-[1px] border-gray-300 rounded-r-md">
+                        <div className="bg-gray-200 px-2 border-l-[1px] border-gray-300 rounded-r-[5px]">
                             {symbol}
                         </div>
                     </div>
                 ) : (
                     <div className="flex">
-                        <div className="bg-gray-200 px-2 rounded-l-md border-r-[1px] border-gray-300">
+                        <div className="bg-gray-200 px-2 rounded-l-[5px] border-r-[1px] border-gray-300">
                             {symbol}
                         </div>
                         <input

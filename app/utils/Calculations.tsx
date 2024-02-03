@@ -34,6 +34,20 @@ export function loanEndDate(
     return `${MONTHS[endMonthAdjusted - 1]}, ${endYear}`;
 }
 
+export function loanEndDateWithBiWeekly(
+    startDateMonth: number,
+    startDateYear: number,
+    numberOfPayments: number
+) {
+    const years = Math.floor(numberOfPayments / 12);
+    const months = (numberOfPayments - 1) % 12;
+    const endMonth = startDateMonth + months;
+    const endYear = startDateYear + years + (endMonth > 12 ? 1 : 0);
+    const endMonthAdjusted = endMonth > 12 ? endMonth - 12 : endMonth;
+
+    return `${MONTHS[endMonthAdjusted - 1]}, ${endYear}`;
+}
+
 export function PMIEndDate(
     startDateMonth: number,
     startDateYear: number,
@@ -229,6 +243,83 @@ function calculatePureMonthlyPayment(
         (1 - (1 + monthlyRate) ** -(loanTerm * 12));
 
     return monthlyPayment;
+}
+
+export function calculateBiweeklyInterest(
+    loanAmount: number,
+    interestRate: number,
+    loanTerm: number
+): { totalBiWeeklyInterest: number; numberOfPayments: number } {
+    const d = interestRate / 100 / 26;
+    const r = interestRate / 100 / 12;
+    const n = loanAmount;
+    const p = (n * r) / (1 - Math.pow(1 + r, -(loanTerm * 12)));
+    const m = p / 2;
+    const g = Math.round(-Math.log(1 - (d * n) / m) / Math.log(1 + d));
+    const f = Math.round((g / 26) * 12);
+    return {
+        totalBiWeeklyInterest: m * g - n,
+        numberOfPayments: f,
+    };
+}
+
+export function calculateAmortizationTable(
+    loanAmount: number,
+    interestRate: number,
+    loanTerm: number,
+    startDateMonth: number,
+    startDateYear: number
+): Array<{
+    year: number;
+    interest: number;
+    principal: number;
+    balance: number;
+}> {
+    const monthlyRate = interestRate / 100 / 12;
+    const monthlyPayment =
+        (monthlyRate * loanAmount) /
+        (1 - (1 + monthlyRate) ** -(loanTerm * 12));
+    let balance = loanAmount;
+    let month = startDateMonth;
+    let year = startDateYear;
+    let yearlyInterest = 0;
+    let yearlyPrincipal = 0;
+    const amortizationTable = [];
+
+    while (balance > monthlyPayment) {
+        const monthlyInterestPaid = balance * monthlyRate;
+        const principalPaid = monthlyPayment - monthlyInterestPaid;
+        balance -= principalPaid;
+        yearlyInterest += monthlyInterestPaid;
+        yearlyPrincipal += principalPaid;
+        if (month % 12 === 0) {
+            amortizationTable.push({
+                year: year,
+                interest: yearlyInterest,
+                principal: yearlyPrincipal,
+                balance,
+            });
+            year++;
+            yearlyInterest = 0;
+            yearlyPrincipal = 0;
+        }
+        month++;
+    }
+    if (balance > 0) {
+        const monthlyInterestPaid = balance * monthlyRate;
+        const principalPaid = balance;
+        balance = 0;
+        yearlyInterest += monthlyInterestPaid;
+        yearlyPrincipal += principalPaid;
+        amortizationTable.push({
+            year: year,
+            interest: yearlyInterest,
+            principal: yearlyPrincipal,
+            balance,
+        });
+    }
+
+    return amortizationTable;
 }
 
 // function calculateMonthlyPaymentWithPMI(
