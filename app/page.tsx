@@ -37,7 +37,10 @@ export default function Home() {
     const [showAmortization, setShowAmortization] = useState(false);
 
     return (
-        <div id="page" className="flex flex-col justify-center text-black">
+        <div
+            id="page"
+            className="flex flex-col justify-center text-black bg-white"
+        >
             <header className="title py-10 px-2 flex justify-center items-center">
                 <h1 className="font-bold">Mortgage</h1>
                 <svg
