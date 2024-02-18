@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { useState } from "react";
 
 import {
@@ -35,6 +35,17 @@ export default function Home() {
     const [monthlyHOA, setMonthlyHOA] = useState(0);
     const [monthlyPayment, setMonthlyPayment] = useState(0);
     const [showAmortization, setShowAmortization] = useState(false);
+
+    const linkRef = useRef(null);
+    useEffect(() => {
+        if (window.self !== window.top) {
+            if (linkRef && linkRef.current) {
+                (linkRef.current as HTMLAnchorElement).target = "_blank";
+                (linkRef.current as HTMLAnchorElement).rel =
+                    "noopener noreferrer";
+            }
+        }
+    }, []);
 
     return (
         <div
@@ -156,6 +167,7 @@ export default function Home() {
                     Created by{" "}
                     <a
                         href="https://estevao.lordeiro.com"
+                        ref={linkRef}
                         className="underline font-medium"
                     >
                         elordeiro
